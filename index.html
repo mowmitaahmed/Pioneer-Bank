@@ -29,19 +29,19 @@
               <div class="col-md-4">
                   <div class="deposit status text-center text-white">
                     <h5>Deposit</h5>
-                    <h2>$00</h2>
+                    <h2>$ <span id="currentDeposit">00</span></h2>
                   </div>
               </div>
               <div class="col-md-4">
                   <div class="withdraw status text-center text-white">
                     <h5>Withdraw</h5>
-                    <h2>$500</h2>
+                    <h2>$ <span id="currentWithdraw">00</span></h2>
                   </div>
               </div>
               <div class="col-md-4">
                   <div class="balance status text-center text-white">
                     <h5>Balance</h5>
-                    <h2>$1240</h2>
+                    <h2>$ <span id="currentBalance">1240</span></h2>
                   </div>
               </div>
           </div>
@@ -49,17 +49,17 @@
               <div class="col-md-6">
                   <div class="submit-area">
                     <h4>Deposit</h4>
-                    <input class="form-control" type="text" placeholder="$ amount you want to deposit">
+                    <input id="depositAmount" class="form-control" type="text" placeholder="$ amount you want to deposit">
                     <br>
-                    <button type="button" class="btn btn-success">Deposit</button>
+                    <button id="addDeposit" type="button" class="btn btn-success">Deposit</button>
                   </div>
               </div>
               <div class="col-md-6">
                   <div class="submit-area">
                     <h4>Withdraw</h4>
-                    <input class="form-control" type="text" placeholder="$ amount you want to withdraw">
+                    <input id="withdrawAmount" class="form-control" type="text" placeholder="$ amount you want to withdraw">
                     <br>
-                    <button type="button" class="btn btn-success">Withdraw</button>
+                    <button id="addWithdraw" type="button" class="btn btn-success">Withdraw</button>
                   </div>
               </div>
           </div>
@@ -75,6 +75,39 @@
             const transactionArea = document.getElementById('transaction-area');
             transactionArea.style.display = "block";
         })
+
+        // Deposit button event handler
+        const depositBtn = document.getElementById("addDeposit");
+        depositBtn.addEventListener('click', function (event) {
+          const depositNumber = getInputNumber("depositAmount");
+
+          updateSpanText("currentDeposit", depositNumber);
+          updateSpanText("currentBalance", depositNumber);
+          document.getElementById("depositAmount").value = "";
+
+        })
+
+        function updateSpanText(id, depositNumber) {
+              const current = document.getElementById(id).innerText;
+              const currentNumber = parseFloat(current);
+              const totalAmount = currentNumber + depositNumber;
+              document.getElementById(id).innerText = totalAmount;
+        }
+
+        // Withdraw button event handler
+        const withdrawBtn = document.getElementById("addWithdraw");
+        withdrawBtn.addEventListener('click', function () {
+          const withdrawNumber = getInputNumber("withdrawAmount");
+          updateSpanText("currentWithdraw", withdrawNumber);
+          updateSpanText("currentBalance", -1 * withdrawNumber);
+          document.getElementById("withdrawAmount").value = "";
+        })
+
+        function getInputNumber(id) {
+          const amount = document.getElementById(id).value;
+          const amountNumber = parseFloat(amount);
+          return amountNumber;
+        }
     </script>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
